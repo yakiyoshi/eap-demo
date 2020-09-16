@@ -32,13 +32,16 @@ spec:
         - name: KITCHENSINK_JNDI
           value: java:jboss/datasources/KitchensinkQuickstartDS
         - name: KITCHENSINK_PASSWORD
-          value: p&ssw0rdp&ssw0rd
+          valueFrom:
+            secretKeyRef:
+              name: eap-app-secret
+              key: database-password
         - name: KITCHENSINK_POSTGRESQL_SERVICE_HOST
-          value: CHANGE_ME_DATABASE_NAME.privatelink.postgres.database.azure.com         ## 環境にあわせて変更してください
+          value: CHANGE_ME_DATABASE_HOST              ## 環境にあわせて変更してください(データベースホスト名)
         - name: KITCHENSINK_POSTGRESQL_SERVICE_PORT
           value: "5432"
         - name: KITCHENSINK_USERNAME
-          value: azrefadmin@CHANGE_ME_DATABASE_NAME                 ## 環境にあわせて変更してください
+          value: CHANGE_ME_DATABASE_USER              ## 環境にあわせて変更してください（ユーザ名）
         - name: AB_PROMETHEUS_ENABLE
           value: "true"
         - name: JGROUPS_PING_PROTOCOL
@@ -48,11 +51,17 @@ spec:
         - name: OPENSHIFT_DNS_PING_SERVICE_PORT
           value: "8888"
         - name: MQ_CLUSTER_PASSWORD
-          value: IDwnNfFL
+          valueFrom:
+            secretKeyRef:
+              name: eap-app-secret
+              key: mq-password
         - name: MQ_QUEUES
         - name: MQ_TOPICS
         - name: JGROUPS_CLUSTER_PASSWORD
-          value: qkE3KDTK
+          valueFrom:
+            secretKeyRef:
+              name: eap-app-secret
+              key: jgroups-password
         - name: AUTO_DEPLOY_EXPLODED
           value: "false"
         - name: ENABLE_GENERATE_DEFAULT_DATASOURCE
