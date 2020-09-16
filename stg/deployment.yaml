@@ -34,11 +34,11 @@ spec:
         - name: KITCHENSINK_PASSWORD
           value: p&ssw0rdp&ssw0rd
         - name: KITCHENSINK_POSTGRESQL_SERVICE_HOST
-          value: CHANGE_ME_DATABASE_HOST              ## 環境にあわせて変更してください(データベースホスト名)
+          value: CHANGE_ME_DATABASE_NAME.privatelink.postgres.database.azure.com   ## 環境にあわせて変更してください
         - name: KITCHENSINK_POSTGRESQL_SERVICE_PORT
           value: "5432"
         - name: KITCHENSINK_USERNAME
-          value: CHANGE_ME_DATABASE_USER              ## 環境にあわせて変更してください（ユーザ名）
+          value: azrefadmin@CHANGE_ME_DATABASE_NAME ## 環境にあわせて変更してください
         - name: AB_PROMETHEUS_ENABLE
           value: "true"
         - name: JGROUPS_PING_PROTOCOL
