@@ -48,9 +48,9 @@ pipeline{
         script{
           openshift.withCluster(){
             openshift.withProject('${STG_NAMESPACE}'){
-              def manifests = findFiles(glob: 'stg/*.yaml')
+              def manifests = findFiles(glob: 'manifests/stg/*.yaml')
               manifests.each{ item ->
-                openshift.apply(readFile("stg/${item.name}"))
+                openshift.apply(readFile("manifests/stg/${item.name}"))
               }
             }
           }
@@ -132,9 +132,9 @@ pipeline{
         script{
           openshift.withCluster(){
             openshift.withProject('${PRD_NAMESPACE}'){
-              def manifests = findFiles(glob: 'prd/*.yaml')
+              def manifests = findFiles(glob: 'manifests/prd/*.yaml')
               manifests.each{ item ->
-                openshift.apply(readFile("prd/${item.name}"))
+                openshift.apply(readFile("manifests/prd/${item.name}"))
               }
             }
           }
