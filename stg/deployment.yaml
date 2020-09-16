@@ -37,11 +37,11 @@ spec:
               name: eap-app-secret
               key: database-password
         - name: KITCHENSINK_POSTGRESQL_SERVICE_HOST
-          value: CHANGE_ME_DATABASE_HOST              ## 環境にあわせて変更してください(データベースホスト名)
+          value: postgresql.eap-demo-stg.svc.cluster.local              ## 環境にあわせて変更してください(データベースホスト名)
         - name: KITCHENSINK_POSTGRESQL_SERVICE_PORT
           value: "5432"
         - name: KITCHENSINK_USERNAME
-          value: CHANGE_ME_DATABASE_USER              ## 環境にあわせて変更してください（ユーザ名）
+          value: admin              ## 環境にあわせて変更してください（ユーザ名）
         - name: AB_PROMETHEUS_ENABLE
           value: "true"
         - name: JGROUPS_PING_PROTOCOL
