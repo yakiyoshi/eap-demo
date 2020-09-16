@@ -1,0 +1,100 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: eap-app
+  name: eap-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      application: eap-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10% 
+      maxSurge: 50%
+  template:
+    metadata:
+      labels:
+        application: eap-app
+      name: eap-app
+    spec:
+      containers:
+      - env:
+        - name: DB_SERVICE_PREFIX_MAPPING
+          value: kitchensink-postgresql=KITCHENSINK
+        - name: KITCHENSINK_BACKGROUND_VALIDATION
+          value: "true"
+        - name: KITCHENSINK_DATABASE
+          value: kitchensink
+        - name: KITCHENSINK_JNDI
+          value: java:jboss/datasources/KitchensinkQuickstartDS
+        - name: KITCHENSINK_PASSWORD
+          value: p&ssw0rdp&ssw0rd
+        - name: KITCHENSINK_POSTGRESQL_SERVICE_HOST
+          value: CHANGE_ME_DATABASE_NAME.privatelink.postgres.database.azure.com   ## 環境にあわせて変更してください
+        - name: KITCHENSINK_POSTGRESQL_SERVICE_PORT
+          value: "5432"
+        - name: KITCHENSINK_USERNAME
+          value: azrefadmin@CHANGE_ME_DATABASE_NAME ## 環境にあわせて変更してください
+        - name: AB_PROMETHEUS_ENABLE
+          value: "true"
+        - name: JGROUPS_PING_PROTOCOL
+          value: dns.DNS_PING
+        - name: OPENSHIFT_DNS_PING_SERVICE_NAME
+          value: eap-app-ping
+        - name: OPENSHIFT_DNS_PING_SERVICE_PORT
+          value: "8888"
+        - name: MQ_CLUSTER_PASSWORD
+          value: IDwnNfFL
+        - name: MQ_QUEUES
+        - name: MQ_TOPICS
+        - name: JGROUPS_CLUSTER_PASSWORD
+          value: qkE3KDTK
+        - name: AUTO_DEPLOY_EXPLODED
+          value: "false"
+        - name: ENABLE_GENERATE_DEFAULT_DATASOURCE
+          value: "false"
+        image: image-registry.openshift-image-registry.svc:5000/eap-demo-stg/eap-app:v1-stg
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - /opt/eap/bin/livenessProbe.sh
+          failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: eap-app
+        ports:
+        - containerPort: 9799
+          name: jmx
+          protocol: TCP
+        - containerPort: 8778
+          name: jolokia
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 8888
+          name: ping
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - /opt/eap/bin/readinessProbe.sh
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 1Gi
