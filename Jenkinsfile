@@ -2,7 +2,7 @@ pipeline{
   agent any
   environment {
     // 環境にあわせて変更してください
-    PIP_NAMESPACE='eap-demo-devpipline'
+    DEV_NAMESPACE='eap-demo-dev'
     STG_NAMESPACE='eap-demo-stg'
     PRD_NAMESPACE='eap-demo-prd'
     APP_NAME='eap-app'
@@ -36,7 +36,7 @@ pipeline{
         script{
           openshift.withCluster(){
             openshift.withProject('${STG_NAMESPACE}'){
-              openshift.tag('${PIP_NAMESPACE}/${APP_NAME}:$tag',
+              openshift.tag('${DEV_NAMESPACE}/${APP_NAME}:latest',
                             '${STG_NAMESPACE}/${APP_NAME}:$tag-stg')
             }
           }
